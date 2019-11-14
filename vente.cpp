@@ -8,3 +8,11 @@ Vente::Vente(int unId, Producteur unProducteur, float unPrix, int uneQuantite, Q
     quantite=uneQuantite;
     dateLimiteVente=uneDateLimiteVente;
 }
+
+bool Vente::verifProd(Producteur unProducteur)
+{
+    if (unProducteur==leProducteur)
+        return true;
+    else
+        return false;
+}

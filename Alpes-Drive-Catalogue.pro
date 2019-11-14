@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     passerelle.cpp \
     pdf.cpp \
     unite.cpp \
-    producteur.cpp
+    producteur.cpp \
+    client.cpp
 
 HEADERS  += mainwindow.h \
     variete.h \
@@ -42,6 +43,7 @@ HEADERS  += mainwindow.h \
     passerelle.h \
     pdf.h \
     unite.h \
-    producteur.h
+    producteur.h \
+    client.h
 
 FORMS    += mainwindow.ui

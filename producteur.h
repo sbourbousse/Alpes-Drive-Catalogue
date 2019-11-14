@@ -9,8 +9,10 @@ private:
     int id;
     QString nom;
     QString prenom;
+    //QVector<Vente> lesVentes;
 public:
     Producteur(int unId, QString unNom, QString unPrenom);
+
 };
 
 #endif // PRODUCTEUR_H

@@ -15,6 +15,11 @@ private:
 public:
     Produit(int unId, QString unLibelle, QString uneImage, QVector<Variete> collectionVarietes);
     QString getLibelle();
+    QVector<Variete> getVarietes();
+    int nbVariete();
+    bool isEnVente(Producteur unProducteur);
+    QString afficherProduit();
+    void chargerVarieteDuClient(QVector<Producteur> desProducteurs);
 };
 
 #endif // PRODUIT_H

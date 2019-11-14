@@ -17,6 +17,7 @@ private:
 
 public:
     Vente(int unId, Producteur unProducteur, float unPrix, int uneQuantite, QDate uneDateLimiteVente);
+    bool verifProd(Producteur unProducteur);
 };
 
 #endif // VENTE_H

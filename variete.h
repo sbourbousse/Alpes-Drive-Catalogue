@@ -16,7 +16,10 @@ private:
 
 public:
     Variete(int unId, QString unLibelle, int uneUniteQuantiteVente, QString uneLettreUnite, QVector<Vente> collectionVentes);
-    bool isEnVente();
+    bool isEnVente(Producteur unProducteur);
+    int nbVente();
+    QString afficherVariete();
+    void chargerVenteDuClient(QVector<Producteur> desProducteurs);
 };
 
 #endif // VARIETE_H

@@ -7,3 +7,4 @@ Producteur::Producteur(int unId, QString unNom, QString unPrenom)
    nom=unNom;
    prenom=unPrenom;
 }
+

@@ -5,7 +5,7 @@ QVector<Categorie> Passerelle::chargerLesCategories()
 {
     QVector<Categorie> lesCategories;
 
-    QString recupererLesCategories = "select categorieId,categorieLibelle,categorieImage from categorie";
+    QString recupererLesCategories = "select categorieId,categorieLibelle,categorieImage from categorie where supprime=false";
     QSqlQuery requeteCategories(recupererLesCategories);
     qDebug()<<recupererLesCategories;
 
@@ -17,7 +17,7 @@ QVector<Categorie> Passerelle::chargerLesCategories()
                                           chargerLesProduits(requeteCategories.value("categorieId").toInt())));
     }
 
-    recupererLesCategories.clear();
+    requeteCategories.clear();
 
     return lesCategories;
 }
@@ -26,7 +26,7 @@ QVector<Produit> Passerelle::chargerLesProduits(int idCategorie)
 {
     QVector<Produit> lesProduits;
 
-    QString recupererLesProduits = "select produitId, produitLibelle, produitImage from produit where categorieId="+QString::number(idCategorie);
+    QString recupererLesProduits = "select produitId, produitLibelle, produitImage from produit where supprime=false and categorieId="+QString::number(idCategorie);
 
     QSqlQuery requeteProduits(recupereLesProduits);
 
@@ -38,7 +38,7 @@ QVector<Produit> Passerelle::chargerLesProduits(int idCategorie)
                                       chargerLesVarietes(requeteProduits.value("produitId").toInt())));
     }
 
-    recupererLesProduits.clear();
+    requeteProduits.clear();
 
     return lesProduits;
 }
@@ -47,7 +47,7 @@ QVector<Variete> Passerelle::chargerLesVarietes(int idProduit)
 {
     QVector<Variete> lesVarietes;
 
-    QString recupererLesVarietes = "select varieteId, varieteLibelle, uniteQuantiteVente, uniteLettre from variete natural join Unite where varieteId="+QString::number(idProduit);
+    QString recupererLesVarietes = "select varieteId, varieteLibelle, uniteQuantiteVente, uniteLettre from variete natural join unite where supprimer=false and varieteId="+QString::number(idProduit);
 
     QSqlQuery requeteVarietes(recupererLesVarietes);
 
@@ -60,29 +60,30 @@ QVector<Variete> Passerelle::chargerLesVarietes(int idProduit)
                                       chargerLesVentes(requeteVarietes.value("varieteId").toInt())));
     }
 
-    recupererLesVarietes.clear();
+    requeteVarietes.clear();
 
     return lesVarietes;
 }
 
-QVector<Vente> Passerelle::chargerLesVentes(int idVariete)
+//Je devrais peut etre charger les vente dans producteur.cpp (en fonction producteur)
+QVector<Vente> Passerelle::chargerLesVentes(int idVariete, int idProducteur)
 {
     QVector<Vente> lesVentes;
 
-    //Producteur()
 
-    QString recupererLesVentes = "select venteId, prix, quantite, dateLimiteVente from Vente";
+    QString recupererLesVentes = "select venteId, prodId, prix, quantite, dateLimiteVente from vente where valide=true and varieteId="+QString::number(idVariete)+" and prodId="+QString::number(idProducteur);
 
     qDebug()<<recupererLesVentes;
 
     QSqlQuery requeteVentes(recupererLesVentes);
 
     while(requeteVentes.next())
-    {
+    {      
         //Je récupère les informations du producteur qui propose la variété
-        QString recupererProducteurVente="select prodId, prodPrenom, prodNom";
+        QString recupererProducteurVente="select prodId, prodPrenom, prodNom from producteur where supprimer=false and prodId="+recupererLesVentes.value("prodId").toString();
         qDebug()<<recupererProducteurVente;
         QSqlQuery requeteProducteurVente(recupererProducteurVente);
+
 
         requeteProducteurVente.first();
 
@@ -91,6 +92,38 @@ QVector<Vente> Passerelle::chargerLesVentes(int idVariete)
                                  requeteProducteurVente.value("prodNom").toString());
 
 
-        lesVentes.push_back(Vente(requeteProducteurVente.value("venteId")));//A FINIR
+        lesVentes.push_back(Vente(recupererLesVentes.value("venteId").toInt(),
+                                  monProducteur,
+                                  requeteVentes.value("prix").toFloat(),
+                                  requeteVentes.value("quantite").toInt(),
+                                  requeteVentes.value("dateLimiteVente").toDate()));
     }
+
+    requeteVentes.clear();
+
+    return lesVentes;
 }
+
+
+QVector<Client> Passerelle::chargerLesClients()
+{
+    QVector<Client> lesClients;
+
+    QString recupererLesClients = "select clientId, clientNom, clientPrenom from client where supprime=false";
+
+    QDebug()<<recupererLesClients;
+
+    QSqlQuery requeteClients(recupererLesClients);
+
+    while(requeteClients.next())
+    {
+        lesClients.push_back(Client(requeteClients.value("clientId").toInt(),
+                                    requeteClients.value("clientNom").toString(),
+                                    requeteClients.value("clientPrenom").toString()));
+    }
+
+    requeteClients.clear();
+
+    return lesClients;
+}
+

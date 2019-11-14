@@ -15,6 +15,10 @@ private:
 public:
     Categorie(int unId, QString unLibelle, QString uneImage, QVector<Produit> collectionProduits);
     QString getLibelle();
+    QVector<Produit> getProduits();
+    bool isEnVente(Producteur unProducteur);
+    int nbProduit();
+    void chargerProduitDuClient(QVector<Producteur> desProducteurs);
 };
 
 #endif // CATEGORIE_H
