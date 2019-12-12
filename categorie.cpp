@@ -1,5 +1,10 @@
 #include "categorie.h"
 
+Categorie::Categorie()
+{
+
+}
+
 Categorie::Categorie(int unId, QString unLibelle, QString uneImage, QVector<Produit> collectionProduits)
 {
     id=unId;
@@ -39,18 +44,38 @@ int Categorie::nbProduit()
     return lesProduits.size();
 }
 
+QString Categorie::afficherCategorie()
+{
+    //A faire : ajouter les images
+
+    QString text = "<div ><center class=\"test\"><h1><u>"+libelle+"</u></h1></center>";
+
+    for(int i = 0 ; i<lesProduits.size() ; i++)
+    {
+        text += lesProduits[i].afficherProduit();
+    }
+
+    text+= "</div>";
+
+    return text;
+}
+
 void Categorie::chargerProduitDuClient(QVector<Producteur> desProducteurs)
 {
     QVector<Produit> produitDuClient;
 
+    bool produitAjoute;
+
     for(int i = 0 ; i<lesProduits.size() ; i++)
     {
+        produitAjoute=false;
         for(int j = 0 ; j<desProducteurs.size() ; j++)
         {
-            if(lesProduits[i].isEnVente(desProducteurs[i]))
+            if((lesProduits[i].isEnVente(desProducteurs[j]))&&(produitAjoute==false))
             {
-                produitDuClient.push_back(lesProduit[i]);
+                produitDuClient.push_back(lesProduits[i]);
                 produitDuClient.last().chargerVarieteDuClient(desProducteurs);
+                produitAjoute=true;
             }
         }
     }

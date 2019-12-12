@@ -2,6 +2,7 @@
 #define CLIENT_H
 
 #include <QString>
+#include <QVector>
 #include "producteur.h"
 
 class Client
@@ -14,9 +15,11 @@ private:
 
 
 public:
+    Client();
     Client(int unId, QString unNom, QString unPrenom);
     QVector<Producteur> chargerProducteurs();
     QVector<Producteur> getProducteurs();
+    int getId();
 };
 
 #endif // CLIENT_H

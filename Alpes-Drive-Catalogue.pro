@@ -6,6 +6,8 @@
 
 QT       += core gui sql printsupport
 
+CONFIG   += c++11
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Alpes-Drive-Catalogue
@@ -24,7 +26,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     variete.cpp \
     produit.cpp \
     categorie.cpp \
@@ -35,7 +36,7 @@ SOURCES += main.cpp\
     producteur.cpp \
     client.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     variete.h \
     produit.h \
     categorie.h \
@@ -46,4 +47,4 @@ HEADERS  += mainwindow.h \
     producteur.h \
     client.h
 
-FORMS    += mainwindow.ui
+FORMS    +=

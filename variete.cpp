@@ -1,5 +1,10 @@
 #include "variete.h"
 
+Variete::Variete()
+{
+
+}
+
 Variete::Variete(int unId, QString unLibelle, int uneUniteQuantiteVente, QString uneLettreUnite, QVector<Vente> collectionVentes)
 {
     id=unId;
@@ -33,12 +38,13 @@ int Variete::nbVente()
 
 QString Variete::afficherVariete()
 {
-    QString text = "<div><h1>"+libelle+"</h1>";
-    for(int i = 0 ; i <nbVente() ; i++)
+    QString text = "<div class=\"vente\"><center><h3>"+libelle+"</h3></center><font size=\"-8\"><table  width=\"150\" class=\"tableauVentes\"><tbody>"
+                   "<tr><th>Producteur</th><th>Prix</th><th>Quantite</th></tr>";
+    for(int i = 0 ; i <lesVentes.size() ; i++)
     {
-        //text+=lesVentes[i].afficherVente();
+        text+=lesVentes[i].afficherVente();
     }
-    text+="</div>";
+    text+="</tbody></table></font></div>";
 
     return text;
 }
@@ -46,16 +52,20 @@ QString Variete::afficherVariete()
 void Variete::chargerVenteDuClient(QVector<Producteur> desProducteurs)
 {
     QVector<Vente> venteDuClient;
+    bool venteAjoute;
 
     for(int i = 0 ; i<lesVentes.size() ; i++)
     {
+        venteAjoute=false;
         for(int j = 0 ; j<desProducteurs.size() ; j++)
         {
-            if(lesVentes[i].verifProd(desProducteurs[i]))
+            if((lesVentes[i].verifProd(desProducteurs[j]))&&(venteAjoute==false))
             {
                 venteDuClient.push_back(lesVentes[i]);
+                venteAjoute=true;
             }
         }
     }
     lesVentes=venteDuClient;
+
 }

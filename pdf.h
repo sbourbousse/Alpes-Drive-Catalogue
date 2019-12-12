@@ -10,10 +10,13 @@
 class PDF
 {
 private:
-    Categorie lesCategories;
+    QVector<Categorie> lesCategories;
+    QVector<Client> lesClients;
+
 public:
     PDF();
-    void creerCatalogue(Client unClient);
+    bool creerCatalogue(Client unClient);
+    bool creerAllCatalogues();
 };
 
 #endif // PDF_H

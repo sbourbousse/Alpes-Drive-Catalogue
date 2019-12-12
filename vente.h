@@ -3,7 +3,6 @@
 
 #include <QString>
 #include <QDate>
-#include "variete.h"
 #include "producteur.h"
 
 class Vente
@@ -16,8 +15,11 @@ private:
     QDate dateLimiteVente;
 
 public:
+    Vente();
     Vente(int unId, Producteur unProducteur, float unPrix, int uneQuantite, QDate uneDateLimiteVente);
     bool verifProd(Producteur unProducteur);
+    QString afficherVente();
+
 };
 
 #endif // VENTE_H

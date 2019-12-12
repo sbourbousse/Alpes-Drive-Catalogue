@@ -5,15 +5,15 @@ QVector<Categorie> Passerelle::chargerLesCategories()
 {
     QVector<Categorie> lesCategories;
 
-    QString recupererLesCategories = "select categorieId,categorieLibelle,categorieImage from categorie where supprime=false";
+    QString recupererLesCategories = "select categorieId,categorieLibelle,categorieImage from categorie";
     QSqlQuery requeteCategories(recupererLesCategories);
     qDebug()<<recupererLesCategories;
 
     while(requeteCategories.next())
     {
         lesCategories.push_back(Categorie(requeteCategories.value("categorieId").toInt(),
-                                          requeteCategorie.value("categorieLibelle").toString(),
-                                          requeteCategorie.value("categorieImage").toString(),
+                                          requeteCategories.value("categorieLibelle").toString(),
+                                          requeteCategories.value("categorieImage").toString(),
                                           chargerLesProduits(requeteCategories.value("categorieId").toInt())));
     }
 
@@ -26,9 +26,10 @@ QVector<Produit> Passerelle::chargerLesProduits(int idCategorie)
 {
     QVector<Produit> lesProduits;
 
-    QString recupererLesProduits = "select produitId, produitLibelle, produitImage from produit where supprime=false and categorieId="+QString::number(idCategorie);
+    QString recupererLesProduits = "select produitId, produitLibelle, produitImage from produit where categorieId="+QString::number(idCategorie);
 
-    QSqlQuery requeteProduits(recupereLesProduits);
+    QSqlQuery requeteProduits(recupererLesProduits);
+    qDebug()<<recupererLesProduits;
 
     while(requeteProduits.next())
     {
@@ -47,16 +48,17 @@ QVector<Variete> Passerelle::chargerLesVarietes(int idProduit)
 {
     QVector<Variete> lesVarietes;
 
-    QString recupererLesVarietes = "select varieteId, varieteLibelle, uniteQuantiteVente, uniteLettre from variete natural join unite where supprimer=false and varieteId="+QString::number(idProduit);
+    QString recupererLesVarietes = "select varieteId, varieteLibelle, uniteQuantiteVente, uniteLettre from variete natural join produit natural join unite where produitId="+QString::number(idProduit);
 
     QSqlQuery requeteVarietes(recupererLesVarietes);
+    qDebug()<<recupererLesVarietes;
 
     while(requeteVarietes.next())
     {
         lesVarietes.push_back(Variete(requeteVarietes.value("varieteId").toInt(),
                                       requeteVarietes.value("varieteLibelle").toString(),
-                                      equeteVarietes.value("uniteQuantiteVente").toInt(),
-                                      equeteVarietes.value("uniteLettre").toString(),
+                                      requeteVarietes.value("uniteQuantiteVente").toInt(),
+                                      requeteVarietes.value("uniteLettre").toString(),
                                       chargerLesVentes(requeteVarietes.value("varieteId").toInt())));
     }
 
@@ -66,12 +68,12 @@ QVector<Variete> Passerelle::chargerLesVarietes(int idProduit)
 }
 
 //Je devrais peut etre charger les vente dans producteur.cpp (en fonction producteur)
-QVector<Vente> Passerelle::chargerLesVentes(int idVariete, int idProducteur)
+QVector<Vente> Passerelle::chargerLesVentes(int idVariete)
 {
     QVector<Vente> lesVentes;
 
 
-    QString recupererLesVentes = "select venteId, prodId, prix, quantite, dateLimiteVente from vente where valide=true and varieteId="+QString::number(idVariete)+" and prodId="+QString::number(idProducteur);
+    QString recupererLesVentes = "select venteId, prodId, prix, quantite, dateLimiteVente from vente where valide=true and varieteId="+QString::number(idVariete);
 
     qDebug()<<recupererLesVentes;
 
@@ -80,7 +82,7 @@ QVector<Vente> Passerelle::chargerLesVentes(int idVariete, int idProducteur)
     while(requeteVentes.next())
     {      
         //Je récupère les informations du producteur qui propose la variété
-        QString recupererProducteurVente="select prodId, prodPrenom, prodNom from producteur where supprimer=false and prodId="+recupererLesVentes.value("prodId").toString();
+        QString recupererProducteurVente="select prodId, prodPrenom, prodNom from producteur where supprime=false and prodId="+requeteVentes.value("prodId").toString();
         qDebug()<<recupererProducteurVente;
         QSqlQuery requeteProducteurVente(recupererProducteurVente);
 
@@ -92,7 +94,7 @@ QVector<Vente> Passerelle::chargerLesVentes(int idVariete, int idProducteur)
                                  requeteProducteurVente.value("prodNom").toString());
 
 
-        lesVentes.push_back(Vente(recupererLesVentes.value("venteId").toInt(),
+        lesVentes.push_back(Vente(requeteVentes.value("venteId").toInt(),
                                   monProducteur,
                                   requeteVentes.value("prix").toFloat(),
                                   requeteVentes.value("quantite").toInt(),
@@ -111,7 +113,7 @@ QVector<Client> Passerelle::chargerLesClients()
 
     QString recupererLesClients = "select clientId, clientNom, clientPrenom from client where supprime=false";
 
-    QDebug()<<recupererLesClients;
+    qDebug()<<recupererLesClients;
 
     QSqlQuery requeteClients(recupererLesClients);
 

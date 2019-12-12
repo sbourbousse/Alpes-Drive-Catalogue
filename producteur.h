@@ -11,7 +11,10 @@ private:
     QString prenom;
     //QVector<Vente> lesVentes;
 public:
+    Producteur();
     Producteur(int unId, QString unNom, QString unPrenom);
+    int getId();
+    QString getNomComplet();
 
 };
 

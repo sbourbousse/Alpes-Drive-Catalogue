@@ -13,6 +13,7 @@ private:
     QString image;
     QVector<Variete> lesVarietes;
 public:
+    Produit();
     Produit(int unId, QString unLibelle, QString uneImage, QVector<Variete> collectionVarietes);
     QString getLibelle();
     QVector<Variete> getVarietes();
